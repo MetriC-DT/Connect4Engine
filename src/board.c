@@ -4,11 +4,11 @@
 
 #include "board.h"
 
-void add(Board *board, char player, int position){
+void add(Board *board, Piece piece, int position){
 
 }
 
-char get(Board *board, int column, int row) {
+Piece get(Board *board, int column, int row) {
 	if (board != NULL && board->isValid) {
 		return board->board[column * BOARD_HEIGHT + row];
 	}

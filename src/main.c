@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "version.h"
-#include "board.h"
+#include "commandline.h"
 
 
 int main(int argc, char *argv[])
