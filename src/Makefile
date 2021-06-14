@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = 
+CFLAGS = -Wall -Wextra -Werror -Wpedantic
 
 ODIR = obj
 
@@ -7,7 +7,7 @@ _OBJ = main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 Connect4Engine: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 $(ODIR)/%.o: %.c directories
 	$(CC) -c -o $@ $< $(CFLAGS)
