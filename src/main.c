@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+
 #include "version.h"
+#include "board.h"
 
 
 int main(int argc, char *argv[])
