@@ -1,0 +1,5 @@
+# do not commit binary
+Connect4Engine
+
+# object files
+*.o
