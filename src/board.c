@@ -68,14 +68,17 @@ bool stackCheck(Board *board) {
 	for (int i = 0; i < BOARD_WIDTH; ++i) {
 		bool reachedStackTop = false;
 		for (int j = 0; j < BOARD_HEIGHT ; ++j) {
-			if (get(board, i, j) == EMPTY) {
+			if (get(board, i, j) == EMPTY && !reachedStackTop) {
+				// case for hitting top of stack
 				reachedStackTop = true;
-				board->stackheight[i] = j + 1;
+				board->stackheight[i] = j;
 			}
-			else if (reachedStackTop) {
+			else if (get(board, i, j) != EMPTY && reachedStackTop) {
+				// case for floating block
 				return false;
 			}
 			else if (j == BOARD_HEIGHT - 1 && !reachedStackTop) {
+				// case for full stack
 				board->stackheight[i] = BOARD_HEIGHT;
 			}
 		}
