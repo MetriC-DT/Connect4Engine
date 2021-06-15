@@ -19,7 +19,7 @@ typedef enum Winner {
 } Winner;
 
 typedef enum Status {
-	BOARD_NULL,
+	BOARD_INVALID,
 	COLUMN_FULL,
 	INVALID_INDEX,
 	INVALID_PIECE,

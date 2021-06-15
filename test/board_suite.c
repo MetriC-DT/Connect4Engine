@@ -44,6 +44,32 @@ void test_get(void)
 	deleteBoard(valid1);
 }
 
+void test_add(void)
+{
+	Board *valid1 = initBoard(VALID1STR);
+	CU_ASSERT_NOT_EQUAL(valid1, NULL);
+
+	CU_ASSERT_EQUAL(add(valid1, PIECE_2, 4), OK);
+	CU_ASSERT_EQUAL(strlen(valid1->board), strlen(VALID2STR));
+	CU_ASSERT_NSTRING_EQUAL(valid1->board, VALID2STR, sizeof(valid1->board));
+	deleteBoard(valid1);
+
+	Board *valid2 = initBoard(VALID2STR);
+	CU_ASSERT_NOT_EQUAL(valid2, NULL);
+
+	CU_ASSERT_EQUAL(add(valid2, PIECE_1, 3), OK);
+	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID3STR));
+	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID3STR, sizeof(valid2->board));
+
+	// failing adds
+	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 6), COLUMN_FULL);
+	CU_ASSERT_EQUAL(add(valid2, PIECE_2, -1), INVALID_INDEX);
+	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 7), INVALID_INDEX);
+	CU_ASSERT_EQUAL(add(valid2, EMPTY, 2), INVALID_PIECE);
+
+	deleteBoard(valid2);
+}
+
 void test_stackHeight(void)
 {
 	Board *empty = initBoard(EMPTYSTR);

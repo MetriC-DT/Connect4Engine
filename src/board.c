@@ -8,11 +8,11 @@
  * returns 0 when no error in adding. 1 otherwise.
  */
 Status add(Board *board, char piece, int column){
-	if (board == NULL) {
-		perror("board is null\n");
-		return BOARD_NULL;
+	if (board == NULL || !board->isValid) {
+		perror("board is invalid\n");
+		return BOARD_INVALID;
 	}
-	else if (piece != PIECE_1 || piece != PIECE_2) {
+	else if (piece != PIECE_1 && piece != PIECE_2) {
 		perror("Cannot place piece\n");
 		return INVALID_PIECE;
 	}
@@ -20,12 +20,12 @@ Status add(Board *board, char piece, int column){
 		perror("Invalid Column index\n");
 		return INVALID_INDEX;
 	}
-	else if (board->stackheight[column] == BOARD_HEIGHT - 1) {
+	else if (board->stackheight[column] == BOARD_HEIGHT) {
 		perror("Column is full\n");
 		return COLUMN_FULL;
 	}
 	else {
-		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]) - 1;
+		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]);
 		board->board[rowFromTop * BOARD_WIDTH + column] = piece;
 		return OK;
 	}
@@ -55,7 +55,7 @@ char get(Board *board, int col, int row) {
 	}
 	else {
 		perror("Attempted to get from invalid board\n");
-		exit(BOARD_NULL);
+		exit(BOARD_INVALID);
 	}
 }
 

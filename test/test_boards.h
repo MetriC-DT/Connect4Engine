@@ -11,10 +11,34 @@ char *EMPTYSTR =
 "_______"
 "_______";
 
+char *EMPTY1STR = 
+"_______"
+"_______"
+"_______"
+"_______"
+"_______"
+"_____O_";
+
 char *VALID1STR =
 "______X"
 "______X"
 "_OX_OOX"
+"OXOXOOO"
+"OOOXXXX"
+"OOOOOOO";
+
+char *VALID2STR = 
+"______X"
+"____X_X"
+"_OX_OOX"
+"OXOXOOO"
+"OOOXXXX"
+"OOOOOOO";
+
+char *VALID3STR = 
+"______X"
+"____X_X"
+"_OXOOOX"
 "OXOXOOO"
 "OOOXXXX"
 "OOOOOOO";
