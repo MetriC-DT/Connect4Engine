@@ -1,8 +1,14 @@
-set (TEST_EXECUTABLE UnitTests)
-set (CMAKE_C_FLAGS "-Wall -Wextra -Werror")
-find_library (CUNIT_LIB cunit)
+set(BINARY ${CMAKE_PROJECT_NAME}_tests)
+set(SUITES_LIB suites.so)
+set(SOURCE_FILES board_suite.c)
 
-add_executable(${TEST_EXECUTABLE} tests.c)
+find_library(CUNIT_LIB cunit)
 
-add_test(NAME ${TEST_EXECUTABLE} COMMAND ${TEST_EXECUTABLE})
-target_link_libraries(${TEST_EXECUTABLE} PUBLIC Board_lib cunit)
+add_library(${SUITES_LIB} ${SOURCE_FILES})
+target_include_directories(${SUITES_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(${BINARY} tests.c)
+target_link_libraries(${BINARY} PUBLIC ${CUNIT_LIB})
+target_link_libraries(${BINARY} PUBLIC ${SRC_LIB} ${SUITES_LIB})
+
+add_test(NAME ${BINARY} COMMAND ${BINARY})

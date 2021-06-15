@@ -2,14 +2,14 @@
 #define BOARD_H
 
 #include <stdbool.h>
+
 #define BOARD_WIDTH 7
 #define BOARD_HEIGHT 6
+#define BOARD_STRING_SIZE BOARD_WIDTH * BOARD_HEIGHT + 1
 
-typedef enum Piece {
-	PIECE_1,
-	PIECE_2,
-	EMPTY
-} Piece;
+#define PIECE_1 'O'
+#define PIECE_2 'X'
+#define EMPTY '_'
 
 typedef enum Winner {
 	PLAYER1,
@@ -25,13 +25,12 @@ typedef enum Winner {
 // O X X
 // Where O is Player1 piece, X is Player2 piece, _ is empty
 typedef struct Board {
-	char board[BOARD_WIDTH * BOARD_HEIGHT + 1];
+	char board[BOARD_STRING_SIZE];
 	bool isValid;
 } Board;
 
-void add(Board *board, Piece piece, int position);
+void add(Board *board, char piece, int position);
 char checkwin(Board *board);
 bool checkValidBoard(Board *board);
-Piece get(Board *board, int column, int row);
-
+char get(Board *board, int column, int row);
 #endif

@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
 #include "board.h"
 
-void add(Board *board, Piece piece, int position){
+void add(Board *board, char piece, int position){
 
 }
 
-Piece get(Board *board, int column, int row) {
+char get(Board *board, int column, int row) {
 	if (board != NULL && board->isValid) {
 		return board->board[column * BOARD_HEIGHT + row];
 	}
@@ -44,6 +43,7 @@ bool checkValidBoard(Board *board){
 		return true;
 	}
 	else {
+		board->isValid = false;
 		return false;
 	}
 }
