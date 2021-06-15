@@ -1,14 +1,14 @@
-set(BINARY ${CMAKE_PROJECT_NAME}_tests)
+set(TEST_BIN tests)
 set(SUITES_LIB suites.so)
-set(SOURCE_FILES board_suite.c)
+set(SUITES_SRC board_suite.c)
 
 find_library(CUNIT_LIB cunit)
 
-add_library(${SUITES_LIB} ${SOURCE_FILES})
-target_include_directories(${SUITES_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(${SUITES_LIB} ${SUITES_SRC})
+target_link_libraries(${SUITES_LIB} ${SRC_LIB})
 
-add_executable(${BINARY} tests.c)
-target_link_libraries(${BINARY} PUBLIC ${CUNIT_LIB})
-target_link_libraries(${BINARY} PUBLIC ${SRC_LIB} ${SUITES_LIB})
+add_executable(${TEST_BIN} tests.c)
+target_link_libraries(${TEST_BIN} ${CUNIT_LIB})
+target_link_libraries(${TEST_BIN} ${SRC_LIB} ${SUITES_LIB})
 
-add_test(NAME ${BINARY} COMMAND ${BINARY})
+add_test(NAME ${TEST_BIN} COMMAND ${TEST_BIN})

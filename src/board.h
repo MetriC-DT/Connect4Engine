@@ -19,11 +19,6 @@ typedef enum Winner {
 } Winner;
 
 // null terminated array so +1 length
-// the board is indexed by COLUMNS, so therefore,
-// _ O _
-// _ O X = [ O _ _ X O O X X _ ]
-// O X X
-// Where O is Player1 piece, X is Player2 piece, _ is empty
 typedef struct Board {
 	char board[BOARD_STRING_SIZE];
 	bool isValid;
@@ -33,4 +28,5 @@ void add(Board *board, char piece, int position);
 char checkwin(Board *board);
 bool checkValidBoard(Board *board);
 char get(Board *board, int column, int row);
+
 #endif
