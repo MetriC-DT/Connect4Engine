@@ -21,7 +21,8 @@ int main(void)
 	/* Adds tests to suite board. */
 	if (
 			CU_add_test(pSuite, "checkValidBoard", test_checkValidBoard) == NULL ||
-			CU_add_test(pSuite, "checkValidBoard", test_get) == NULL)
+			CU_add_test(pSuite, "checkValidBoard", test_get) == NULL ||
+			CU_add_test(pSuite, "checkValidBoard", test_stackHeight) == NULL)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();

@@ -18,15 +18,28 @@ typedef enum Winner {
 	INCOMPLETE
 } Winner;
 
+typedef enum Status {
+	BOARD_NULL,
+	COLUMN_FULL,
+	INVALID_INDEX,
+	INVALID_PIECE,
+	OK
+} Status;
+
 // null terminated array so +1 length
 typedef struct Board {
 	char board[BOARD_STRING_SIZE];
+	int stackheight[BOARD_WIDTH];
 	bool isValid;
 } Board;
 
-void add(Board *board, char piece, int position);
-char checkwin(Board *board);
-bool checkValidBoard(Board *board);
+Status add(Board *board, char piece, int col);
 char get(Board *board, int column, int row);
+bool stackCheck(Board *board);
+bool checkValidBoard(Board *board);
+Board* initBoard(char *boardString);
+void deleteBoard(Board *board);
+bool checkStringSize(char *boardstr);
+Winner checkwin(Board *board);
 
 #endif

@@ -3,34 +3,28 @@
 
 #include "board.h"
 
-Board emptyBoard = {
-	"_______"
-	"_______"
-	"_______"
-	"_______"
-	"_______"
-	"_______",
-	false
-};
+char *EMPTYSTR = 
+"_______"
+"_______"
+"_______"
+"_______"
+"_______"
+"_______";
 
-Board valid1 = {
-	"______X"
-	"______X"
-	"_OX_OOX"
-	"OXOXOOO"
-	"OOOXXXX"
-	"OOOOOOO",
-	false
-};
+char *VALID1STR =
+"______X"
+"______X"
+"_OX_OOX"
+"OXOXOOO"
+"OOOXXXX"
+"OOOOOOO";
 
-Board invalid1 = {
-	"_______"
-	"_______"
-	"___O___"
-	"_______"
-	"_______"
-	"_______",
-	false
-};
+char *INVALID1STR =
+"_______"
+"_______"
+"___O___"
+"_______"
+"_______"
+"_______";
 
 #endif
