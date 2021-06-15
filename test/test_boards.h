@@ -43,6 +43,14 @@ char *VALID3STR =
 "OOOXXXX"
 "OOOOOOO";
 
+char *VALID4STR = 
+"______X"
+"___OX_X"
+"_OXOOOX"
+"OXOXOOO"
+"OOOXXXX"
+"OOOOOOO";
+
 char *INVALID1STR =
 "_______"
 "_______"

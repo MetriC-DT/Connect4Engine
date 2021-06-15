@@ -54,12 +54,23 @@ void test_add(void)
 	CU_ASSERT_NSTRING_EQUAL(valid1->board, VALID2STR, sizeof(valid1->board));
 	deleteBoard(valid1);
 
-	Board *valid2 = initBoard(VALID2STR);
+	Board *valid2 = initBoard(VALID1STR);
 	CU_ASSERT_NOT_EQUAL(valid2, NULL);
 
+	// VALID1STR -> VALID2STR
+	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 4), OK);
+	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID2STR));
+	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID2STR, sizeof(valid2->board));
+
+	// VALID2STR -> VALID3STR
 	CU_ASSERT_EQUAL(add(valid2, PIECE_1, 3), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID3STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID3STR, sizeof(valid2->board));
+
+	// VALID3STR -> VALID4STR
+	CU_ASSERT_EQUAL(add(valid2, PIECE_1, 3), OK);
+	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID4STR));
+	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID4STR, sizeof(valid2->board));
 
 	// failing adds
 	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 6), COLUMN_FULL);
