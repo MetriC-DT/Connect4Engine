@@ -4,9 +4,6 @@
 #include <string.h>
 #include "board.h"
 
-/**
- * returns 0 when no error in adding. 1 otherwise.
- */
 Status add(Board *board, char piece, int column){
 	if (board == NULL || !board->isValid) {
 		perror("board is invalid\n");
@@ -27,6 +24,7 @@ Status add(Board *board, char piece, int column){
 	else {
 		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]);
 		board->board[rowFromTop * BOARD_WIDTH + column] = piece;
+		board->history[++board->turn] = column;
 		return OK;
 	}
 }
@@ -114,6 +112,9 @@ Board* initBoard(char *boardString) {
 		}
 		strcpy(b->board, boardString);
 		b->isValid = false;
+
+		// begins at -1 in order to have zero indexed when the first element is added to history.
+		b->turn = -1;
 		if (!checkValidBoard(b)) {
 			perror("BoardString is not valid!\n");
 			free(b);
