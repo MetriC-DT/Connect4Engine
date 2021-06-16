@@ -1,3 +1,4 @@
+#include <sys/param.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -5,37 +6,35 @@
 #include "board.h"
 
 Status add(Board *board, char piece, int column){
-	if (board == NULL || !board->isValid) {
-		perror("board is invalid\n");
+	if (board == NULL || !board->isValid || board->winner != INCOMPLETE) {
 		return BOARD_INVALID;
 	}
 	else if (piece != PIECE_1 && piece != PIECE_2) {
-		perror("Cannot place piece\n");
 		return INVALID_PIECE;
 	}
 	else if (column < 0 || column >= BOARD_WIDTH) {
-		perror("Invalid Column index\n");
 		return INVALID_INDEX;
 	}
 	else if (board->stackheight[column] == BOARD_HEIGHT) {
-		perror("Column is full\n");
 		return COLUMN_FULL;
 	}
 	else {
 		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]);
 		board->board[rowFromTop * BOARD_WIDTH + column] = piece;
 		board->history[++board->turn] = column;
+		--board->emptycount;
+		board->winner = checkwin(board, column, board->stackheight[column] - 1);
+
 		return OK;
 	}
 }
 
+
 Status revert(Board *board) {
 	if (board == NULL || !board->isValid) {
-		perror("Board is invalid\n");
 		return BOARD_INVALID;
 	}
 	else if (board->turn < 0) {
-		perror("Game not started\n");
 		return INVALID_INDEX;
 	}
 	else {
@@ -43,9 +42,19 @@ Status revert(Board *board) {
 		int rowFromBottom = --board->stackheight[prevCol];
 		int rowFromTop = BOARD_HEIGHT - rowFromBottom - 1;
 		board->board[rowFromTop * BOARD_WIDTH + prevCol] = EMPTY;
+		++board->emptycount;
+		board->winner = INCOMPLETE;
 		return OK;
 	}
 }
+
+
+// does same thing as get, but skips check.
+char _fast_get(Board *board, int col, int row) {
+	int rowFromTop = BOARD_HEIGHT - row - 1;
+	return board->board[rowFromTop * BOARD_WIDTH + col];
+}
+
 
 /*
  * Columns measured from the left 0 -> 6
@@ -59,20 +68,13 @@ Status revert(Board *board) {
  * ___O___
  */
 char get(Board *board, int col, int row) {
-	if (board != NULL) {
-		if (0 <= col && col < BOARD_WIDTH && 0 <= row && row < BOARD_HEIGHT) {
-			int rowFromTop = BOARD_HEIGHT - row - 1;
-			return board->board[rowFromTop * BOARD_WIDTH + col];
-		}
-		else {
-			perror("Invalid get index\n");
-			exit(INVALID_INDEX);
-		}
+	if (board != NULL &&
+			0 <= col && col < BOARD_WIDTH &&
+			0 <= row && row < BOARD_HEIGHT)
+	{
+		return _fast_get(board, col, row);
 	}
-	else {
-		perror("Attempted to get from invalid board\n");
-		exit(BOARD_INVALID);
-	}
+	return INVALID_CHAR;
 }
 
 
@@ -125,23 +127,30 @@ Board* initBoard(char *boardString) {
 	if (boardString != NULL && checkStringSize(boardString)) {
 		Board *b = (Board *) malloc(sizeof(Board));
 		if (b == NULL) {
-			perror("Memory not allocated for new board\n");
 			return NULL;
 		}
 		strcpy(b->board, boardString);
 		b->isValid = false;
+		b->winner = INCOMPLETE;
 
 		// begins at -1 in order to have zero indexed when the first element is added to history.
 		b->turn = -1;
 		if (!checkValidBoard(b)) {
-			perror("BoardString is not valid!\n");
 			free(b);
 			return NULL;
 		}
+
+		int emptycount = 0;
+		for (int i = 0; i < BOARD_SIZE; ++i) {
+			emptycount += (boardString[i] == EMPTY);
+		}
+
+		b->emptycount = emptycount;
+		b->winner = checkwinInit(b);
+
 		return b;
 	}
 	else {
-		perror("Invalid boardString\n");
 		return NULL;
 	}
 }
@@ -154,4 +163,123 @@ void deleteBoard(Board *board) {
 
 bool checkStringSize(char *boardstr) {
 	return strlen(boardstr) == BOARD_STRING_SIZE - 1;
+}
+
+
+char _checkHorizontal(Board *board, int col, int row, char c)
+{
+	int leftbound = MAX(col - (CONNECT_LEN - 1), 0);
+	int rightbound = MIN(col + (CONNECT_LEN - 1), BOARD_WIDTH - 1);
+
+	// checks for any 4 in a row
+	int count = 0;
+	for (int i = leftbound; i <= rightbound; ++i) {
+		if (_fast_get(board, i, row) != c) {
+			count = 0;
+		}
+		else if(++count == CONNECT_LEN) {
+			return c;
+		}
+	}
+	return INCOMPLETE;
+}
+
+char _checkVertical(Board *board, int col, int row, char c)
+{
+	int topbound = MIN(row + (CONNECT_LEN - 1), BOARD_HEIGHT - 1);
+	int bottombound = MAX(0, row - (CONNECT_LEN - 1));
+
+	// check for any 4 in a col
+	int count = 0;
+	for (int i = bottombound; i <= topbound; ++i)
+	{
+		if (_fast_get(board, col, i) != c) {
+			count = 0;
+		}
+		else if (++count == CONNECT_LEN) {
+			return c;
+		}
+	}
+	return INCOMPLETE;
+}
+
+char _checkDiagonals(Board *board, int col, int row, char c)
+{
+	int topbound = MIN(row + (CONNECT_LEN - 1), BOARD_HEIGHT - 1);
+	int bottombound = MAX(0, row - (CONNECT_LEN - 1));
+	int leftbound = MAX(col - (CONNECT_LEN - 1), 0);
+	int rightbound = MIN(col + (CONNECT_LEN - 1), BOARD_WIDTH - 1);
+	int difftop = topbound - row;
+	int diffbot = row - bottombound;
+	int diffleft = leftbound - col;
+	int diffright = col - rightbound;
+
+	// bottomleft -> topright
+	int leftdiagdiff = MIN(diffleft, diffbot);
+	int rightdiagdiff = MIN(difftop, diffright);
+	int count = 0;
+	for (int i = -leftdiagdiff; i <= rightdiagdiff; ++i) {
+		if (_fast_get(board, col + i, row + i) != c) {
+			count = 0;
+		}
+		else if (++count == CONNECT_LEN) {
+			return c;
+		}
+	}
+
+	// topleft -> bottomright
+	leftdiagdiff = MIN(diffleft, difftop);
+	rightdiagdiff = MIN(diffright, diffbot);
+	count = 0;
+	for (int i = -leftdiagdiff; i <= rightdiagdiff; ++i) {
+		if (_fast_get(board, col + i, row - i) != c) {
+			count = 0;
+		}
+		else if (++count == CONNECT_LEN) {
+			return c;
+		}
+	}
+
+	return INCOMPLETE;
+}
+
+char checkwin(Board *board, int col, int row)
+{
+	char c = _fast_get(board, col, row);
+	if (
+			_checkHorizontal(board, col, row, c) != INCOMPLETE ||
+			_checkVertical(board, col, row, c) != INCOMPLETE ||
+			_checkDiagonals(board, col, row, c) != INCOMPLETE) {
+		printf("%c %d %d\n", c, col, row);
+		return c;
+	}
+	else if (board->emptycount == 0) {
+		return TIE;
+	}
+	else {
+		return INCOMPLETE;
+	}
+}
+
+char checkwinInit(Board *board)
+{
+	for (int i = 0; i < BOARD_HEIGHT; ++i) {
+		for (int j = 0; j < BOARD_WIDTH; ++j) {
+			if (_fast_get(board, j, i) == EMPTY) {
+				continue;
+			}
+
+			char result = checkwin(board, j, i);
+			if (result != INCOMPLETE) {
+				return result;
+			}
+		}
+	}
+	return INCOMPLETE;
+}
+
+Board *copyBoard(Board *board)
+{
+	board = NULL;
+	return board;
 }

@@ -21,35 +21,51 @@ char *EMPTY1STR =
 
 char *VALID1STR =
 "______X"
-"______X"
-"_OX_OOX"
-"OXOXOOO"
-"OOOXXXX"
-"OOOOOOO";
+"______O"
+"____O_X"
+"_OXXX_O"
+"_OXOO_X"
+"OXOOXXO";
 
 char *VALID2STR = 
 "______X"
-"____X_X"
-"_OX_OOX"
-"OXOXOOO"
-"OOOXXXX"
-"OOOOOOO";
+"______O"
+"____O_X"
+"_OXXX_O"
+"XOXOO_X"
+"OXOOXXO";
 
 char *VALID3STR = 
 "______X"
-"____X_X"
-"_OXOOOX"
-"OXOXOOO"
-"OOOXXXX"
-"OOOOOOO";
+"______O"
+"____O_X"
+"OOXXX_O"
+"XOXOO_X"
+"OXOOXXO";
 
 char *VALID4STR = 
 "______X"
-"___OX_X"
-"_OXOOOX"
-"OXOXOOO"
-"OOOXXXX"
-"OOOOOOO";
+"______O"
+"X___O_X"
+"OOXXX_O"
+"XOXOO_X"
+"OXOOXXO";
+
+char *VALID5STR = 
+"______X"
+"______O"
+"X___O_X"
+"OOXXX_O"
+"XOXOOOX"
+"OXOOXXO";
+
+char *XWINSTR = 
+"______X"
+"______O"
+"X___O_X"
+"OOXXXXO"
+"XOXOOOX"
+"OXOOXXO";
 
 char *INVALID1STR =
 "_______"
