@@ -60,8 +60,10 @@ Board* initBoard(char *boardString);
 // deletes board from memory.
 void deleteBoard(Board *board);
 
-// Checksh whether a given string is a valid board length.
-bool checkStringSize(char *boardstr);
+// Checksh whether a given string is a valid board string.
+// Valid board strings can only contain PIECE_1, PIECE_2, and EMPTY.
+// Also must be BOARD_STRING_SIZE length.
+bool checkString(char *boardstr);
 
 // Checks whether a given board has a completed game.
 // row is the row the last piece was placed (measured from bottom)

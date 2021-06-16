@@ -124,7 +124,7 @@ bool checkValidBoard(Board *board){
 }
 
 Board* initBoard(char *boardString) {
-	if (boardString != NULL && checkStringSize(boardString)) {
+	if (boardString != NULL && checkString(boardString)) {
 		Board *b = (Board *) malloc(sizeof(Board));
 		if (b == NULL) {
 			return NULL;
@@ -161,8 +161,18 @@ void deleteBoard(Board *board) {
 	}
 }
 
-bool checkStringSize(char *boardstr) {
-	return strlen(boardstr) == BOARD_STRING_SIZE - 1;
+bool checkString(char *boardstr) {
+	if (strlen(boardstr) != BOARD_SIZE)
+		return false;
+	else {
+		// checks if contains only valid characters
+		for (int i = 0; i < BOARD_SIZE; ++i) {
+			if (boardstr[i] != PIECE_1 && boardstr[i] != PIECE_2 && boardstr[i] != EMPTY) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 
