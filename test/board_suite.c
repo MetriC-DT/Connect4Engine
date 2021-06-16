@@ -191,6 +191,40 @@ void test_revert(void)
 	deleteBoard(empty);
 }
 
+void test_checkwin(void) {
+	Board *b = initBoard(WINDIAG1);
+	CU_ASSERT_EQUAL(b->winner, PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 0, 0), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 1), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 2, 2), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 3, 3), PIECE_2);
+	deleteBoard(b);
+
+	b = initBoard(XWINSTR);
+	CU_ASSERT_EQUAL(b->winner, PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 2, 2), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 3, 2), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 4, 2), PIECE_2);
+	CU_ASSERT_EQUAL(checkwin(b, 5, 2), PIECE_2);
+	deleteBoard(b);
+
+	b = initBoard(WINDIAG2);
+	CU_ASSERT_EQUAL(b->winner, PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 4), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 2, 3), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 3, 2), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 4, 1), PIECE_1);
+	deleteBoard(b);
+
+	b = initBoard(WINVERT);
+	CU_ASSERT_EQUAL(b->winner, PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 0), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 1), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 2), PIECE_1);
+	CU_ASSERT_EQUAL(checkwin(b, 1, 3), PIECE_1);
+	deleteBoard(b);
+}
+
 void test_stackHeight(void)
 {
 	Board *empty = initBoard(EMPTYSTR);

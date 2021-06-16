@@ -211,8 +211,8 @@ char _checkDiagonals(Board *board, int col, int row, char c)
 	int rightbound = MIN(col + (CONNECT_LEN - 1), BOARD_WIDTH - 1);
 	int difftop = topbound - row;
 	int diffbot = row - bottombound;
-	int diffleft = leftbound - col;
-	int diffright = col - rightbound;
+	int diffleft = col - leftbound;
+	int diffright = rightbound - col;
 
 	// bottomleft -> topright
 	int leftdiagdiff = MIN(diffleft, diffbot);
@@ -250,7 +250,6 @@ char checkwin(Board *board, int col, int row)
 			_checkHorizontal(board, col, row, c) != INCOMPLETE ||
 			_checkVertical(board, col, row, c) != INCOMPLETE ||
 			_checkDiagonals(board, col, row, c) != INCOMPLETE) {
-		printf("%c %d %d\n", c, col, row);
 		return c;
 	}
 	else if (board->emptycount == 0) {

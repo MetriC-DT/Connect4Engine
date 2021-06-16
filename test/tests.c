@@ -25,6 +25,7 @@ int main(void)
 			CU_add_test(pSuite, "test_get", test_get) == NULL ||
 			CU_add_test(pSuite, "test_add", test_add) == NULL ||
 			CU_add_test(pSuite, "test_add_fail", test_add_fail) == NULL ||
+			CU_add_test(pSuite, "test_checkwin", test_checkwin) == NULL ||
 			CU_add_test(pSuite, "test_revert", test_revert) == NULL ||
 			CU_add_test(pSuite, "test_stackheight", test_stackHeight) == NULL)
 	{

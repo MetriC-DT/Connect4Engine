@@ -67,6 +67,30 @@ char *XWINSTR =
 "XOXOOOX"
 "OXOOXXO";
 
+char *WINVERT =
+"_______"
+"_______"
+"_O_____"
+"XO_____"
+"XO_____"
+"XO_____";
+
+char *WINDIAG1 = 
+"_______"
+"_______"
+"_O_X___"
+"_OXO___"
+"_XOX___"
+"XOXO___";
+
+char *WINDIAG2 = 
+"_______"
+"_O_____"
+"_OOOX__"
+"_OXOX__"
+"_XOXOO_"
+"XOXOXX_";
+
 char *INVALID1STR =
 "_______"
 "_______"
