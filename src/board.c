@@ -29,6 +29,24 @@ Status add(Board *board, char piece, int column){
 	}
 }
 
+Status revert(Board *board) {
+	if (board == NULL || !board->isValid) {
+		perror("Board is invalid\n");
+		return BOARD_INVALID;
+	}
+	else if (board->turn < 0) {
+		perror("Game not started\n");
+		return INVALID_INDEX;
+	}
+	else {
+		int prevCol = board->history[board->turn--];
+		int rowFromBottom = --board->stackheight[prevCol];
+		int rowFromTop = BOARD_HEIGHT - rowFromBottom - 1;
+		board->board[rowFromTop * BOARD_WIDTH + prevCol] = EMPTY;
+		return OK;
+	}
+}
+
 /*
  * Columns measured from the left 0 -> 6
  * Rows measured from the bottom 0 -> 5

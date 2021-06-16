@@ -35,10 +35,16 @@ typedef struct Board {
 	int turn;
 } Board;
 
+// adds piece to board at column. Column zero indexed, counted from left.
 Status add(Board *board, char piece, int col);
 
-// Obtains the piece at the given column
+// Obtains the piece at the given column and row.
+// The row is counted from the bottom, so the lowest
+// row is row 0, and the highest is row 5.
 char get(Board *board, int column, int row);
+
+// reverts a board to the previous position.
+Status revert(Board *board);
 
 // checks whether all the stacks are valid.
 // Validity just checks the board for any

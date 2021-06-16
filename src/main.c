@@ -55,5 +55,7 @@ int main(int argc, char *argv[])
         printf("%s\n", argv[optind]);
     }
 
+	cmd_run();
+
     return 0;
 }

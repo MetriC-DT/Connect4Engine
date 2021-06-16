@@ -1,6 +1,6 @@
 #ifndef COMMANDLINE_H
 #define COMMANDLINE_H
 
-void run(void);
+void cmd_run(void);
 
 #endif

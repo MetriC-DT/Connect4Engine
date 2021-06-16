@@ -23,6 +23,7 @@ int main(void)
 			CU_add_test(pSuite, "test_validBoard", test_checkValidBoard) == NULL ||
 			CU_add_test(pSuite, "test_get", test_get) == NULL ||
 			CU_add_test(pSuite, "test_add", test_add) == NULL ||
+			CU_add_test(pSuite, "test_revert", test_revert) == NULL ||
 			CU_add_test(pSuite, "test_stackheight", test_stackHeight) == NULL)
 	{
 		CU_cleanup_registry();

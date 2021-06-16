@@ -95,6 +95,25 @@ void test_add(void)
 	deleteBoard(valid2);
 }
 
+void test_revert(void)
+{
+	Board *empty = initBoard(EMPTYSTR);
+
+	CU_ASSERT_NOT_EQUAL(empty, NULL);
+	CU_ASSERT_EQUAL(revert(empty), INVALID_INDEX);
+
+	CU_ASSERT_EQUAL(add(empty, PIECE_1, 3), OK);
+	CU_ASSERT_EQUAL(empty->turn, 0);
+	CU_ASSERT_EQUAL(empty->history[empty->turn], 3);
+
+	CU_ASSERT_EQUAL(revert(empty), OK);
+	printf("%s\n", empty->board);
+	CU_ASSERT_NSTRING_EQUAL(empty->board, EMPTYSTR, strlen(EMPTYSTR));
+	CU_ASSERT_EQUAL(empty->turn, -1);
+
+	deleteBoard(empty);
+}
+
 void test_stackHeight(void)
 {
 	Board *empty = initBoard(EMPTYSTR);
