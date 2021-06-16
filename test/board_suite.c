@@ -107,9 +107,29 @@ void test_revert(void)
 	CU_ASSERT_EQUAL(empty->history[empty->turn], 3);
 
 	CU_ASSERT_EQUAL(revert(empty), OK);
-	printf("%s\n", empty->board);
 	CU_ASSERT_NSTRING_EQUAL(empty->board, EMPTYSTR, strlen(EMPTYSTR));
 	CU_ASSERT_EQUAL(empty->turn, -1);
+
+	add(empty, PIECE_1, 3); // turn 0
+	char pos0[BOARD_STRING_SIZE];
+	strcpy(pos0, empty->board);
+
+	add(empty, PIECE_2, 2); // turn 1
+	char pos1[BOARD_STRING_SIZE];
+	strcpy(pos1, empty->board);
+
+	add(empty, PIECE_1, 2); // turn 2
+
+	revert(empty);
+	CU_ASSERT_EQUAL(empty->turn, 1);
+	CU_ASSERT_NSTRING_EQUAL(pos1, empty->board, strlen(pos1));
+
+	revert(empty);
+	CU_ASSERT_EQUAL(empty->turn, 0);
+	CU_ASSERT_NSTRING_EQUAL(pos0, empty->board, strlen(pos0));
+
+	revert(empty);
+	CU_ASSERT_NSTRING_EQUAL(EMPTYSTR, empty->board, strlen(EMPTYSTR));
 
 	deleteBoard(empty);
 }
