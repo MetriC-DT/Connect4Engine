@@ -75,6 +75,6 @@ void displayBoard(Board *board);
 // row is the row the last piece was placed (measured from bottom)
 // col is the column the last piece was placed.
 // Assumes that row and col is not EMPTY and is within index.
-char checkwin(Board *board, int row, int col);
+char checkwin(Board *board, int col, int row);
 
 #endif
