@@ -1,10 +1,10 @@
 #ifndef COMMANDLINE_H
 #define COMMANDLINE_H
 
-#define QUIT "quit\n"
-#define NEW "new\n"
-#define HELP "help\n"
-#define DISP "disp\n"
+#define QUIT "quit"
+#define NEW "new"
+#define HELP "help"
+#define DISP "disp"
 
 typedef enum Gamestate {
 	NOT_INITIALIZED,

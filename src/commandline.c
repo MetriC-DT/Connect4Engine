@@ -29,7 +29,10 @@ void cmd_run()
 	}
 
 	do {
-		getline(&cmdstr, &sizeAlloc, stdin);
+		wchar_t len = getline(&cmdstr, &sizeAlloc, stdin);
+
+		// replaces newline with null character.
+		cmdstr[len - 1] = '\0';
 
 		// NEW
 		if (strcmp(cmdstr, NEW) == 0) {
