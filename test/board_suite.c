@@ -223,6 +223,12 @@ void test_checkwin(void) {
 	CU_ASSERT_EQUAL(checkwin(b, 1, 2), PIECE_1);
 	CU_ASSERT_EQUAL(checkwin(b, 1, 3), PIECE_1);
 	deleteBoard(b);
+
+	b = initBoard(EMPTY1STR);
+	CU_ASSERT_EQUAL(b->winner, INCOMPLETE);
+	if (get(b, 5, 0) != EMPTY)
+		CU_ASSERT_EQUAL(checkwin(b, 5, 0), INCOMPLETE);
+	deleteBoard(b);
 }
 
 void test_stackHeight(void)

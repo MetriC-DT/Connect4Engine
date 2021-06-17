@@ -16,6 +16,8 @@
 #define INCOMPLETE 'I'
 #define INVALID_CHAR 0
 
+#define NEWBOARD "_______" "_______" "_______" "_______" "_______" "_______"
+
 typedef enum Status {
 	BOARD_INVALID,
 	COLUMN_FULL,
@@ -45,11 +47,6 @@ Status revert(Board *board);
 // row is row 0, and the highest is row 5.
 char get(Board *board, int column, int row);
 
-// checks whether all the stacks are valid.
-// Validity just checks the board for any
-// floating pieces.
-bool stackCheck(Board *board);
-
 // checks whether a given board is valid.
 // Uses stackCheck, checks Null, and string length.
 bool checkValidBoard(Board *board);
@@ -60,22 +57,24 @@ Board* initBoard(char *boardString);
 // deletes board from memory.
 void deleteBoard(Board *board);
 
-// Checksh whether a given string is a valid board string.
+// Checks whether a given string is a valid board string.
 // Valid board strings can only contain PIECE_1, PIECE_2, and EMPTY.
 // Also must be BOARD_STRING_SIZE length.
 bool checkString(char *boardstr);
+
+// gets the winner of the board.
+char getWinner(Board *board);
+
+// creates a copy of a board. (allocates same board in new memory).
+Board *copyBoard(Board *board);
+
+// prints board
+void displayBoard(Board *board);
 
 // Checks whether a given board has a completed game.
 // row is the row the last piece was placed (measured from bottom)
 // col is the column the last piece was placed.
 // Assumes that row and col is not EMPTY and is within index.
 char checkwin(Board *board, int row, int col);
-
-// checks whether a given board has a completed game.
-// Should only be used on initialization.
-char checkwinInit(Board *board);
-
-// creates a copy of a board. (allocates same board in new memory).
-Board *copyBoard(Board *board);
 
 #endif

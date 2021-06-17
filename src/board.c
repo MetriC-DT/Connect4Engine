@@ -5,6 +5,27 @@
 #include <string.h>
 #include "board.h"
 
+
+// checks whether all the stacks are valid.
+// Validity just checks the board for any
+// floating pieces.
+bool stackCheck(Board *board);
+
+// checks whether a given board has a completed game.
+// Should only be used on initialization.
+char checkwinInit(Board *board);
+
+// does same thing as get, but skips check.
+char fastget(Board *board, int col, int row);
+
+// checks for checkwin
+char checkHorizontal(Board *board, int col, int row, char c);
+char checkVertical(Board *board, int col, int row, char c);
+char checkDiagonals(Board *board, int col, int row, char c);
+
+
+/*****************************************************************/
+
 Status add(Board *board, char piece, int column){
 	if (board == NULL || !board->isValid || board->winner != INCOMPLETE) {
 		return BOARD_INVALID;
@@ -50,7 +71,7 @@ Status revert(Board *board) {
 
 
 // does same thing as get, but skips check.
-char _fast_get(Board *board, int col, int row) {
+char fastget(Board *board, int col, int row) {
 	int rowFromTop = BOARD_HEIGHT - row - 1;
 	return board->board[rowFromTop * BOARD_WIDTH + col];
 }
@@ -72,7 +93,7 @@ char get(Board *board, int col, int row) {
 			0 <= col && col < BOARD_WIDTH &&
 			0 <= row && row < BOARD_HEIGHT)
 	{
-		return _fast_get(board, col, row);
+		return fastget(board, col, row);
 	}
 	return INVALID_CHAR;
 }
@@ -175,8 +196,16 @@ bool checkString(char *boardstr) {
 	}
 }
 
+char getWinner(Board *board)
+{
+	if (board != NULL)
+		return board->winner;
+	else
+		return INVALID_CHAR;
+}
 
-char _checkHorizontal(Board *board, int col, int row, char c)
+
+char checkHorizontal(Board *board, int col, int row, char c)
 {
 	int leftbound = MAX(col - (CONNECT_LEN - 1), 0);
 	int rightbound = MIN(col + (CONNECT_LEN - 1), BOARD_WIDTH - 1);
@@ -184,7 +213,7 @@ char _checkHorizontal(Board *board, int col, int row, char c)
 	// checks for any 4 in a row
 	int count = 0;
 	for (int i = leftbound; i <= rightbound; ++i) {
-		if (_fast_get(board, i, row) != c) {
+		if (fastget(board, i, row) != c) {
 			count = 0;
 		}
 		else if(++count == CONNECT_LEN) {
@@ -194,7 +223,7 @@ char _checkHorizontal(Board *board, int col, int row, char c)
 	return INCOMPLETE;
 }
 
-char _checkVertical(Board *board, int col, int row, char c)
+char checkVertical(Board *board, int col, int row, char c)
 {
 	int topbound = MIN(row + (CONNECT_LEN - 1), BOARD_HEIGHT - 1);
 	int bottombound = MAX(0, row - (CONNECT_LEN - 1));
@@ -203,7 +232,7 @@ char _checkVertical(Board *board, int col, int row, char c)
 	int count = 0;
 	for (int i = bottombound; i <= topbound; ++i)
 	{
-		if (_fast_get(board, col, i) != c) {
+		if (fastget(board, col, i) != c) {
 			count = 0;
 		}
 		else if (++count == CONNECT_LEN) {
@@ -213,7 +242,7 @@ char _checkVertical(Board *board, int col, int row, char c)
 	return INCOMPLETE;
 }
 
-char _checkDiagonals(Board *board, int col, int row, char c)
+char checkDiagonals(Board *board, int col, int row, char c)
 {
 	int topbound = MIN(row + (CONNECT_LEN - 1), BOARD_HEIGHT - 1);
 	int bottombound = MAX(0, row - (CONNECT_LEN - 1));
@@ -229,7 +258,7 @@ char _checkDiagonals(Board *board, int col, int row, char c)
 	int rightdiagdiff = MIN(difftop, diffright);
 	int count = 0;
 	for (int i = -leftdiagdiff; i <= rightdiagdiff; ++i) {
-		if (_fast_get(board, col + i, row + i) != c) {
+		if (fastget(board, col + i, row + i) != c) {
 			count = 0;
 		}
 		else if (++count == CONNECT_LEN) {
@@ -242,7 +271,7 @@ char _checkDiagonals(Board *board, int col, int row, char c)
 	rightdiagdiff = MIN(diffright, diffbot);
 	count = 0;
 	for (int i = -leftdiagdiff; i <= rightdiagdiff; ++i) {
-		if (_fast_get(board, col + i, row - i) != c) {
+		if (fastget(board, col + i, row - i) != c) {
 			count = 0;
 		}
 		else if (++count == CONNECT_LEN) {
@@ -255,11 +284,11 @@ char _checkDiagonals(Board *board, int col, int row, char c)
 
 char checkwin(Board *board, int col, int row)
 {
-	char c = _fast_get(board, col, row);
+	char c = fastget(board, col, row);
 	if (
-			_checkHorizontal(board, col, row, c) != INCOMPLETE ||
-			_checkVertical(board, col, row, c) != INCOMPLETE ||
-			_checkDiagonals(board, col, row, c) != INCOMPLETE) {
+			checkHorizontal(board, col, row, c) != INCOMPLETE ||
+			checkVertical(board, col, row, c) != INCOMPLETE ||
+			checkDiagonals(board, col, row, c) != INCOMPLETE) {
 		return c;
 	}
 	else if (board->emptycount == 0) {
@@ -274,7 +303,7 @@ char checkwinInit(Board *board)
 {
 	for (int i = 0; i < BOARD_HEIGHT; ++i) {
 		for (int j = 0; j < BOARD_WIDTH; ++j) {
-			if (_fast_get(board, j, i) == EMPTY) {
+			if (fastget(board, j, i) == EMPTY) {
 				continue;
 			}
 
@@ -287,8 +316,19 @@ char checkwinInit(Board *board)
 	return INCOMPLETE;
 }
 
+// TODO
 Board *copyBoard(Board *board)
 {
 	board = NULL;
 	return board;
+}
+
+void displayBoard(Board *board)
+{
+	for (int i = 0; i < BOARD_HEIGHT; ++i) {
+		for (int j = 0; j < BOARD_WIDTH; ++j) {
+			printf("%c ", board->board[i * BOARD_WIDTH + j]);
+		}
+		printf("\n");
+	}
 }
