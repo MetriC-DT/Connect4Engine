@@ -57,6 +57,10 @@ void cmd_run()
 		}
 	}
 	while (1);
+
+	// frees all memory
+	deleteBoard(b);
+	free(cmdstr);
 }
 
 void cmd_new(Board **b)
