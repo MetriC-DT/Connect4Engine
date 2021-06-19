@@ -224,8 +224,6 @@ void test_tie(void) {
 	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
 	add(b, 4);
 	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-
-
 	add(b, 6);
 	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
 	add(b, 1);
