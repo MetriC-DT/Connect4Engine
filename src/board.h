@@ -18,11 +18,13 @@
 
 #define NEWBOARD "_______" "_______" "_______" "_______" "_______" "_______"
 
+extern const char* STATUS_NAMES[];
 typedef enum Status {
 	BOARD_INVALID,
 	COLUMN_FULL,
 	INVALID_INDEX,
 	INVALID_PIECE,
+	GAME_OVER,
 	OK
 } Status;
 
@@ -33,11 +35,12 @@ typedef struct Board {
 	int history[BOARD_SIZE];
 	int turn;
 	char winner;
+	char currentPlayer;
 	int emptycount;
 } Board;
 
 // adds piece to board at column. Column zero indexed, counted from left.
-Status add(Board *board, char piece, int col);
+Status add(Board *board, int col);
 
 // reverts a board to the previous position.
 Status revert(Board *board);

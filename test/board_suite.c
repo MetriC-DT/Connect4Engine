@@ -77,7 +77,7 @@ void test_add(void)
 	CU_ASSERT_NOT_EQUAL(valid1, NULL);
 	CU_ASSERT_EQUAL(valid1->turn, -1);
 
-	CU_ASSERT_EQUAL(add(valid1, PIECE_2, 0), OK);
+	CU_ASSERT_EQUAL(add(valid1, 0), OK);
 	CU_ASSERT_EQUAL(strlen(valid1->board), strlen(VALID2STR));
 	CU_ASSERT_NSTRING_EQUAL(valid1->board, VALID2STR, sizeof(valid1->board));
 	CU_ASSERT_EQUAL(valid1->turn, 0);
@@ -90,7 +90,7 @@ void test_add(void)
 	CU_ASSERT_EQUAL(valid2->winner, INCOMPLETE);
 
 	// VALID1STR -> VALID2STR
-	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 0), OK);
+	CU_ASSERT_EQUAL(add(valid2, 0), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID2STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID2STR, sizeof(valid2->board));
 	CU_ASSERT_EQUAL(valid2->turn, 0);
@@ -98,7 +98,7 @@ void test_add(void)
 	CU_ASSERT_EQUAL(valid2->winner, INCOMPLETE);
 
 	// VALID2STR -> VALID3STR
-	CU_ASSERT_EQUAL(add(valid2, PIECE_1, 0), OK);
+	CU_ASSERT_EQUAL(add(valid2, 0), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID3STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID3STR, sizeof(valid2->board));
 	CU_ASSERT_EQUAL(valid2->turn, 1);
@@ -106,7 +106,7 @@ void test_add(void)
 	CU_ASSERT_EQUAL(valid2->winner, INCOMPLETE);
 
 	// VALID3STR -> VALID4STR
-	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 0), OK);
+	CU_ASSERT_EQUAL(add(valid2, 0), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID4STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID4STR, sizeof(valid2->board));
 	CU_ASSERT_EQUAL(valid2->turn, 2);
@@ -114,7 +114,7 @@ void test_add(void)
 	CU_ASSERT_EQUAL(valid2->winner, INCOMPLETE);
 
 	// VALID4STR -> VALID5STR
-	CU_ASSERT_EQUAL(add(valid2, PIECE_1, 5), OK);
+	CU_ASSERT_EQUAL(add(valid2, 5), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID5STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, VALID5STR, sizeof(valid2->board));
 	CU_ASSERT_EQUAL(valid2->turn, 3);
@@ -122,7 +122,7 @@ void test_add(void)
 	CU_ASSERT_EQUAL(valid2->winner, INCOMPLETE);
 
 	// VALID5STR -> XWINSTR
-	CU_ASSERT_EQUAL(add(valid2, PIECE_2, 5), OK);
+	CU_ASSERT_EQUAL(add(valid2, 5), OK);
 	CU_ASSERT_EQUAL(strlen(valid2->board), strlen(VALID5STR));
 	CU_ASSERT_NSTRING_EQUAL(valid2->board, XWINSTR, sizeof(valid2->board));
 	CU_ASSERT_EQUAL(valid2->turn, 4);
@@ -136,19 +136,17 @@ void test_add_fail(void)
 {
 	// failing adds
 	Board *b1 = initBoard(VALID1STR);
-	CU_ASSERT_EQUAL(add(b1, PIECE_2, 6), COLUMN_FULL);
+	CU_ASSERT_EQUAL(add(b1, 6), COLUMN_FULL);
 	CU_ASSERT_EQUAL(b1->turn, -1);
-	CU_ASSERT_EQUAL(add(b1, PIECE_2, -1), INVALID_INDEX);
+	CU_ASSERT_EQUAL(add(b1, -1), INVALID_INDEX);
 	CU_ASSERT_EQUAL(b1->turn, -1);
-	CU_ASSERT_EQUAL(add(b1, PIECE_2, 7), INVALID_INDEX);
-	CU_ASSERT_EQUAL(b1->turn, -1);
-	CU_ASSERT_EQUAL(add(b1, EMPTY, 2), INVALID_PIECE);
+	CU_ASSERT_EQUAL(add(b1, 7), INVALID_INDEX);
 	CU_ASSERT_EQUAL(b1->turn, -1);
 
 	deleteBoard(b1);
 
 	b1 = initBoard(XWINSTR);
-	CU_ASSERT_EQUAL(add(b1, PIECE_2, 3), BOARD_INVALID);
+	CU_ASSERT_EQUAL(add(b1, 3), GAME_OVER);
 	deleteBoard(b1);
 }
 
@@ -159,7 +157,7 @@ void test_revert(void)
 	CU_ASSERT_NOT_EQUAL(empty, NULL);
 	CU_ASSERT_EQUAL(revert(empty), INVALID_INDEX);
 
-	CU_ASSERT_EQUAL(add(empty, PIECE_1, 3), OK);
+	CU_ASSERT_EQUAL(add(empty, 3), OK);
 	CU_ASSERT_EQUAL(empty->turn, 0);
 	CU_ASSERT_EQUAL(empty->history[empty->turn], 3);
 
@@ -167,15 +165,15 @@ void test_revert(void)
 	CU_ASSERT_NSTRING_EQUAL(empty->board, EMPTYSTR, strlen(EMPTYSTR));
 	CU_ASSERT_EQUAL(empty->turn, -1);
 
-	add(empty, PIECE_1, 3); // turn 0
+	add(empty, 3); // turn 0
 	char pos0[BOARD_STRING_SIZE];
 	strcpy(pos0, empty->board);
 
-	add(empty, PIECE_2, 2); // turn 1
+	add(empty, 2); // turn 1
 	char pos1[BOARD_STRING_SIZE];
 	strcpy(pos1, empty->board);
 
-	add(empty, PIECE_1, 2); // turn 2
+	add(empty, 2); // turn 2
 
 	revert(empty);
 	CU_ASSERT_EQUAL(empty->turn, 1);

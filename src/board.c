@@ -5,6 +5,16 @@
 #include <string.h>
 #include "board.h"
 
+const char *STATUS_NAMES[] = {
+	"INVALID_BOARD",
+	"COLUMN_FULL",
+	"INVALID_INDEX",
+	"INVALID_PIECE",
+	"GAME_OVER",
+	"OK"
+};
+
+
 
 // checks whether all the stacks are valid.
 // Validity just checks the board for any
@@ -26,8 +36,9 @@ char checkDiagonals(Board *board, int col, int row, char c);
 
 /*****************************************************************/
 
-Status add(Board *board, char piece, int column){
-	if (board == NULL || !board->isValid || board->winner != INCOMPLETE) {
+Status add(Board *board, int column){
+	char piece = board->currentPlayer;
+	if (board == NULL || !board->isValid) {
 		return BOARD_INVALID;
 	}
 	else if (piece != PIECE_1 && piece != PIECE_2) {
@@ -39,12 +50,16 @@ Status add(Board *board, char piece, int column){
 	else if (board->stackheight[column] == BOARD_HEIGHT) {
 		return COLUMN_FULL;
 	}
+	else if (board->winner != INCOMPLETE) {
+		return GAME_OVER;
+	}
 	else {
 		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]);
 		board->board[rowFromTop * BOARD_WIDTH + column] = piece;
 		board->history[++board->turn] = column;
 		--board->emptycount;
 		board->winner = checkwin(board, column, board->stackheight[column] - 1);
+		board->currentPlayer = (board->currentPlayer == PIECE_1) ? PIECE_2 : PIECE_1;
 
 		return OK;
 	}
@@ -65,6 +80,8 @@ Status revert(Board *board) {
 		board->board[rowFromTop * BOARD_WIDTH + prevCol] = EMPTY;
 		++board->emptycount;
 		board->winner = INCOMPLETE;
+		board->currentPlayer = (board->currentPlayer == PIECE_1) ? PIECE_2 : PIECE_1;
+
 		return OK;
 	}
 }
@@ -168,6 +185,7 @@ Board* initBoard(char *boardString) {
 
 		b->emptycount = emptycount;
 		b->winner = checkwinInit(b);
+		b->currentPlayer = (emptycount % 2 == 0) ? PIECE_1 : PIECE_2;
 
 		return b;
 	}
@@ -325,6 +343,9 @@ Board *copyBoard(Board *board)
 
 void displayBoard(Board *board)
 {
+	if (board == NULL)
+		return;
+
 	for (int i = 0; i < BOARD_HEIGHT; ++i) {
 		for (int j = 0; j < BOARD_WIDTH; ++j) {
 			printf("%c ", board->board[i * BOARD_WIDTH + j]);

@@ -5,6 +5,8 @@
 #define NEW "new"
 #define HELP "help"
 #define DISP "disp"
+#define REVERT "revert"
+#define PUT "put "
 
 typedef enum Gamestate {
 	NOT_INITIALIZED,
