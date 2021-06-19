@@ -189,6 +189,101 @@ void test_revert(void)
 	deleteBoard(empty);
 }
 
+void test_tie(void) {
+	Board *b = initBoard(EMPTYSTR);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+
+	// Plays entire game till tied
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 2);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+
+
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 3);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 5);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 6);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 1);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 0);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+	add(b, 4);
+	CU_ASSERT_EQUAL(getWinner(b), TIE);
+
+	deleteBoard(b);
+}
+
 void test_checkwin(void) {
 	Board *b = initBoard(WINDIAG1);
 	CU_ASSERT_EQUAL(b->winner, PIECE_2);

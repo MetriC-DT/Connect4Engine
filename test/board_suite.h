@@ -10,6 +10,7 @@ void test_add(void);
 void test_revert(void);
 void test_stackHeight(void);
 void test_add_fail(void);
+void test_tie(void);
 void test_checkwin(void);
 
 #endif
