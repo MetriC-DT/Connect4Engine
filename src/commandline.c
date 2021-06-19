@@ -111,9 +111,9 @@ void cmd_help()
 	printf("commands available:\n");
 	printf("* new\n");
 	printf("* disp\n");
-	printf("* help\n");
+	printf("* put [0-6]\n");
 	printf("* revert\n");
-	printf("* put[0-6]\n");
+	printf("* help\n");
 	printf("* quit\n");
 }
 
