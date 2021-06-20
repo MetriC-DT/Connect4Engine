@@ -19,14 +19,14 @@ int clean_suite_strategy(void)
 void test_ValidMoves(void)
 {
 	Board *b = initBoard(EMPTYSTR);
-	int *availableMoves = getAvailableMoves(b);
+	int availableMoves[BOARD_WIDTH + 1];
+	getAvailableMoves(b, availableMoves);
 	CU_ASSERT_EQUAL(availableMoves[0], 7);
 
-	free(availableMoves);
 	free(b);
 
 	b = initBoard(VALID1STR);
-	availableMoves = getAvailableMoves(b);
+	getAvailableMoves(b, availableMoves);
 	CU_ASSERT_EQUAL(availableMoves[0], 6);
 
 	for (int i = 1; i <= availableMoves[0]; ++i) {
@@ -34,5 +34,4 @@ void test_ValidMoves(void)
 	}
 
 	free(b);
-	free(availableMoves);
 }
