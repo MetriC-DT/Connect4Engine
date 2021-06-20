@@ -123,6 +123,7 @@ void cmd_help()
 	printf("* disp\n");
 	printf("* put [0-6]\n");
 	printf("* revert\n");
+	printf("* getmove\n");
 	printf("* help\n");
 	printf("* quit\n");
 }
