@@ -99,4 +99,7 @@ char *INVALID1STR =
 "_______"
 "_______";
 
+// line guaranteed to draw from empty board.
+char *DRAW_LINE = "232233362226604611133554555114560610400044";
+
 #endif

@@ -194,91 +194,17 @@ void test_tie(void) {
 	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
 
 	// Plays entire game till tied
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 2);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 3);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 5);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 6);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 1);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 0);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
-	add(b, 4);
-	CU_ASSERT_EQUAL(getWinner(b), TIE);
+	for (u_long i = 0; i < strlen(DRAW_LINE); ++i) {
+		int move = DRAW_LINE[i] - '0';
+		add(b, move);
 
+		if (i == strlen(DRAW_LINE) - 1) {
+			CU_ASSERT_EQUAL(getWinner(b), TIE);
+		}
+		else {
+			CU_ASSERT_EQUAL(getWinner(b), INCOMPLETE);
+		}
+	}
 	deleteBoard(b);
 }
 
