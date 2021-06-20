@@ -29,7 +29,7 @@ void cmd_run()
 		exit(1);
 	}
 
-	do {
+	while (1) {
 		ssize_t len = getline(&cmdstr, &sizeAlloc, stdin);
 
 		// replaces newline with null character.
@@ -96,7 +96,6 @@ void cmd_run()
 		// 	printf("GAME IS OVER. Winner: %c\n", getWinner(b));
 		// }
 	}
-	while (1);
 
 	// frees all memory
 	deleteBoard(b);
