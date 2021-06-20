@@ -1,6 +1,6 @@
 set(TEST_BIN tests)
 set(SUITES_LIB suites.so)
-set(SUITES_SRC board_suite.c)
+set(SUITES_SRC test_boards.h board_suite.c strategy_suite.c)
 
 find_library(CUNIT_LIB cunit)
 
