@@ -7,6 +7,7 @@
 #define DISP "disp"
 #define REVERT "revert"
 #define PUT "put "
+#define GETMOVE "getmove"
 
 typedef enum Gamestate {
 	NOT_INITIALIZED,

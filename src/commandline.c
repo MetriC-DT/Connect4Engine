@@ -5,12 +5,14 @@
 
 #include "board.h"
 #include "commandline.h"
+#include "strategy.h"
 
 Board *cmd_new(Gamestate *s);
 void cmd_help();
 void cmd_disp(Board *b, Gamestate s);
 void cmd_revert(Board *b, Gamestate s);
 void cmd_put(Board *b, Gamestate s, int loc);
+int cmd_getmove(Board *b, Gamestate s);
 
 void cmd_run()
 {
@@ -58,6 +60,14 @@ void cmd_run()
 
 			long loc = strtol(arg, NULL, 10);
 			cmd_put(b, state, loc);
+		}
+
+		else if (strcmp(cmdstr, GETMOVE) == 0) {
+			int move = cmd_getmove(b, state);
+			if (move >= 0)
+				printf("%d\n", move);
+			else
+				printf("Unable to get move.\n");
 		}
 
 		// HELP
@@ -141,5 +151,16 @@ void cmd_put(Board *b, Gamestate s, int loc)
 	Status status = add(b, loc);
 	if (status != OK) {
 		printf("Cannot Put. Reason: %s\n", STATUS_NAMES[status]);
+	}
+}
+
+int cmd_getmove(Board *b, Gamestate s)
+{
+	if (b == NULL || s != INITIALIZED) {
+		printf("Board invalid or not initialized\n");
+		return -1;
+	}
+	else {
+		return strategyRandom(b);
 	}
 }
