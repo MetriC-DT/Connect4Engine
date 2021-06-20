@@ -39,7 +39,7 @@ int main(void)
 		return CU_get_error();
 	}
 
-	/* Adds tests to suite board. */
+	/* Adds tests to suite strategy. */
 	if (
 			CU_add_test(pSuiteStrategy, "test_validmoves", test_ValidMoves) == NULL)
 	{
