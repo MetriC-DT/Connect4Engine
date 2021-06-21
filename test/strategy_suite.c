@@ -70,7 +70,9 @@ void test_canWin(void)
 	}
 
 	CU_ASSERT_EQUAL(getWinner(b), PIECE_1);
-	printf(" --- %c won in %d turns --- ", PIECE_1, turncount);
+
+	// must stay alive as long as possible.
+	CU_ASSERT_EQUAL(turncount, DEPTH);
 
 	deleteBoard(b);
 }
