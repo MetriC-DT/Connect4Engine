@@ -5,6 +5,7 @@
 #include "strategy.h"
 #include "board.h"
 
+// Evaluation table for number of possible 4-in-a-rows
 const int EVALTABLE[BOARD_SIZE] = {
 	3, 4, 5,  7,  5,  4, 3,
 	4, 6, 8,  10, 8,  6, 4,
@@ -51,7 +52,7 @@ int strategyRandom(Board *b)
 }
 
 
-int strategyAlphaBeta(Board *b)
+Pair strategyAlphaBeta(Board *b)
 {
 	int color = (b->currentPlayer == PIECE_1) ? 1 : -1;
 	int alpha = -MAX_SCORE;
@@ -59,27 +60,25 @@ int strategyAlphaBeta(Board *b)
 
 	Pair p;
 	if (color == 1)
-		p = negamax(b, DEPTH, alpha, beta, color);
+		p = negamax(b, b->currentPlayer, DEPTH, alpha, beta, color);
 	else
-		p = negamax(b, DEPTH, -beta, -alpha, color);
+		p = negamax(b, b->currentPlayer, DEPTH, -beta, -alpha, color);
 
 	if (p.move < 0) {
-		perror("Defaulting to random strategy.\n");
-		return strategyRandom(b);
+		printf("Defaulting to random strategy.\n");
+		p.move = strategyRandom(b);
 	}
-	else {
-		return p.move;
-	}
+
+	return p;
 }
 
-
-Pair negamax(Board *b, int depth, int alpha, int beta, int color)
+Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int color)
 {
 	Pair p;
 	p.move = -1;
 
 	if (getWinner(b) != INCOMPLETE || depth == 0) {
-		p.value = color * eval(b, depth);
+		p.value = color * eval(b, depth, currentPlayer);
 		return p;
 	}
 
@@ -91,7 +90,7 @@ Pair negamax(Board *b, int depth, int alpha, int beta, int color)
 	for (int i = 1; i <= movecount; ++i) {
 		add(b, moves[i]);
 
-		int evalVal = -negamax(b, depth - 1, -beta, -alpha, -color).value;
+		int evalVal = -negamax(b, currentPlayer, depth - 1, -beta, -alpha, -color).value;
 
 		revert(b);
 
@@ -109,14 +108,19 @@ Pair negamax(Board *b, int depth, int alpha, int beta, int color)
 }
 
 
-int eval(Board *b, int depth)
+int eval(Board *b, int depth, char currentPlayer)
 {
-	if (getWinner(b) == PIECE_1)
-		return MAX_SCORE - depth;
-	else if (getWinner(b) == PIECE_2)
-		return -MAX_SCORE + depth;
-	else if (getWinner(b) == TIE)
+	if (getWinner(b) == PIECE_1) {
+		int offset = (currentPlayer == PIECE_1) ? depth : -depth;
+		return offset + MAX_SCORE;
+	}
+	else if (getWinner(b) == PIECE_2) {
+		int offset = (currentPlayer == PIECE_2) ? -depth : depth;
+		return -MAX_SCORE + offset;
+	}
+	else if (getWinner(b) == TIE) {
 		return 0;
+	}
 
 	int sum = 0;
 	for (int i = 0; i < BOARD_HEIGHT; ++i) {

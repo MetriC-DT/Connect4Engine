@@ -19,12 +19,12 @@ void getAvailableMoves(Board *b, int *moves);
 int strategyRandom(Board *b);
 
 // alpha beta pruning. Returns the evaluation of the current position.
-int strategyAlphaBeta(Board *b);
+Pair strategyAlphaBeta(Board *b);
 
 // static eval of board.
-int eval(Board *b, int depth);
+int eval(Board *b, int depth, char currentPlayer);
 
-Pair negamax(Board *b, int depth, int alpha, int beta, int color);
+Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int color);
 
 extern const int EVALTABLE[BOARD_SIZE];
 

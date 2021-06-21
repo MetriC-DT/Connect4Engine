@@ -8,6 +8,7 @@
 #define REVERT "revert"
 #define PUT "put "
 #define GETMOVE "getmove"
+#define EVAL "eval"
 
 typedef enum Gamestate {
 	NOT_INITIALIZED,

@@ -12,7 +12,8 @@ void cmd_help();
 void cmd_disp(Board *b, Gamestate s);
 void cmd_revert(Board *b, Gamestate s);
 void cmd_put(Board *b, Gamestate s, int loc);
-int cmd_getmove(Board *b, Gamestate s);
+void cmd_eval(Board *b, Gamestate s);
+void cmd_getmove(Board *b, Gamestate s);
 
 void cmd_run()
 {
@@ -64,11 +65,11 @@ void cmd_run()
 
 		// GETMOVE
 		else if (strcmp(cmdstr, GETMOVE) == 0) {
-			int move = cmd_getmove(b, state);
-			if (move >= 0)
-				printf("%d\n", move);
-			else
-				printf("Unable to get move.\n");
+			cmd_getmove(b, state);
+		}
+
+		else if (strcmp(cmdstr, EVAL) == 0) {
+			cmd_eval(b, state);
 		}
 
 		// HELP
@@ -127,6 +128,7 @@ void cmd_help()
 	printf("* put [0-6]\n");
 	printf("* revert\n");
 	printf("* getmove\n");
+	printf("* eval\n");
 	printf("* help\n");
 	printf("* quit\n");
 }
@@ -158,13 +160,25 @@ void cmd_put(Board *b, Gamestate s, int loc)
 	}
 }
 
-int cmd_getmove(Board *b, Gamestate s)
+void cmd_getmove(Board *b, Gamestate s)
 {
 	if (b == NULL || s != INITIALIZED) {
 		printf("Board invalid or not initialized\n");
-		return -1;
+		return;
 	}
 	else {
-		return strategyAlphaBeta(b);
+		printf("%d\n", strategyAlphaBeta(b).move);
+	}
+}
+
+void cmd_eval(Board *b, Gamestate s)
+{
+	if (b == NULL || s != INITIALIZED) {
+		printf("Board invalid or not initialized\n");
+		return;
+	}
+	else {
+		int multiplier = b->currentPlayer == PIECE_1 ? 1 : -1;
+		printf("%d\n", multiplier * strategyAlphaBeta(b).value); 
 	}
 }
