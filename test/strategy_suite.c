@@ -23,7 +23,7 @@ void test_ValidMoves(void)
 	getAvailableMoves(b, availableMoves);
 	CU_ASSERT_EQUAL(availableMoves[0], 7);
 
-	free(b);
+	deleteBoard(b);
 
 	b = initBoard(VALID1STR);
 	getAvailableMoves(b, availableMoves);
@@ -33,19 +33,40 @@ void test_ValidMoves(void)
 		CU_ASSERT_NOT_EQUAL(availableMoves[i], 6);
 	}
 
-	free(b);
+	deleteBoard(b);
 }
 
 void test_eval(void)
 {
 	Board *b = initBoard(EMPTYSTR);
 	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), 0);
-	free(b);
+	deleteBoard(b);
 
 	b = initBoard(VALID1STR);
 	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), 2);
 
 	add(b, 0);
 	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), -2);
-	free(b);
+	deleteBoard(b);
+}
+
+void test_canWin(void)
+{
+	// piece 1 will win in this line.
+	char *oWinString = "33333641111325545455152264404016060660202";
+
+	Board *b = initBoard(EMPTYSTR);
+	for (unsigned long i = 0; i < strlen(oWinString) - DEPTH; ++i) {
+		Status status = add(b, oWinString[i] - '0');
+		CU_ASSERT_EQUAL(status, OK);
+	}
+
+	while (getWinner(b) == INCOMPLETE) {
+		int col = strategyAlphaBeta(b).move;
+		Status status = add(b, col);
+		CU_ASSERT_EQUAL(status, OK);
+	}
+
+	CU_ASSERT_EQUAL(getWinner(b), PIECE_1);
+	deleteBoard(b);
 }

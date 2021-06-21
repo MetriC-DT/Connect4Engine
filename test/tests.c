@@ -42,6 +42,7 @@ int main(void)
 	/* Adds tests to suite strategy. */
 	if (
 			CU_add_test(pSuiteStrategy, "test_validmoves", test_ValidMoves) == NULL ||
+			CU_add_test(pSuiteStrategy, "test_canWin", test_canWin) == NULL ||
 			CU_add_test(pSuiteStrategy, "test_eval", test_eval) == NULL)
 	{
 		CU_cleanup_registry();
