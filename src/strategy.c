@@ -25,9 +25,13 @@ void getAvailableMoves(Board *b, int *moves)
 	}
 
 	int validmoves = 0;
+	int col = BOARD_WIDTH / 2;
+	int off = 0;
 	for (int i = 0; i < BOARD_WIDTH; ++i) {
-		if (b->stackheight[i] < BOARD_HEIGHT) {
-			moves[++validmoves] = i;
+		off = (i % 2 == 0) ? i : -i;
+		col = col + off;
+		if (b->stackheight[col] < BOARD_HEIGHT) {
+			moves[++validmoves] = col;
 		}
 	}
 
