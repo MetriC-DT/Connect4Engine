@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/param.h>
+#include <omp.h>
 
 #include "strategy.h"
 #include "board.h"
@@ -128,6 +129,8 @@ int eval(Board *b, int depth, char currentPlayer)
 	}
 
 	int sum = 0;
+
+	#pragma omp parallel for collapse(2) shared(sum)
 	for (int i = 0; i < BOARD_HEIGHT; ++i) {
 		for (int j = 0; j < BOARD_WIDTH; ++j) {
 			char piece = get(b, j, i);

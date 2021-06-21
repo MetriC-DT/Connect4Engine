@@ -346,6 +346,7 @@ void displayBoard(Board *board)
 	if (board == NULL)
 		return;
 
+	printf("Game Status: %c\n", board->winner);
 	for (int i = 0; i < BOARD_HEIGHT; ++i) {
 		for (int j = 0; j < BOARD_WIDTH; ++j) {
 			printf("%c ", board->board[i * BOARD_WIDTH + j]);
