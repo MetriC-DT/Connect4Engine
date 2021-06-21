@@ -185,7 +185,7 @@ Board* initBoard(char *boardString) {
 
 		b->emptycount = emptycount;
 		b->winner = checkwinInit(b);
-		b->currentPlayer = (emptycount % 2 == 0) ? PIECE_1 : PIECE_2;
+		b->currentPlayer = (BOARD_SIZE - emptycount) % 2 == 0 ? PIECE_1 : PIECE_2;
 
 		return b;
 	}

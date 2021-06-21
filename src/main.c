@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 			{"help", no_argument, 0, 'h'},
 			{"database", required_argument, 0, 'd'},
 			{"time", required_argument, 0, 't'},
+			{"level", required_argument, 0, 'l'},
 			{"mode", required_argument, 0, 'm'},
 			{0, 0, 0, 0}
 		};
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
 			no_argument: " "
 			required_argument: ":"
 			optional_argument: "::" */
-		choice = getopt_long(argc, argv, "vhd:t:m:", long_options, &option_index);
+		choice = getopt_long(argc, argv, "vhd:t:m:l:", long_options, &option_index);
 
 		if (choice == -1)
 			break;
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
 			return EXIT_SUCCESS;
 
 		case 'h':
+			// TODO
 			printf("HELP MENU UNDER CONSTRUCTION\n");
 			return EXIT_SUCCESS;
 
