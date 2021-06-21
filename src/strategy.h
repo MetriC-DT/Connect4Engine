@@ -30,6 +30,6 @@ extern const int EVALTABLE[BOARD_SIZE];
 
 #define MAX_SCORE 10000
 
-#define DEPTH 13
+#define MIN_DEPTH 13
 
 #endif

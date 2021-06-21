@@ -67,9 +67,9 @@ Pair strategyAlphaBeta(Board *b)
 
 	Pair p;
 	if (color == 1)
-		p = negamax(b, b->currentPlayer, DEPTH, alpha, beta, color);
+		p = negamax(b, b->currentPlayer, MIN_DEPTH, alpha, beta, color);
 	else
-		p = negamax(b, b->currentPlayer, DEPTH, -beta, -alpha, color);
+		p = negamax(b, b->currentPlayer, MIN_DEPTH, -beta, -alpha, color);
 
 	if (p.move < 0) {
 		printf("Defaulting to random strategy.\n");

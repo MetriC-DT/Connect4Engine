@@ -56,7 +56,7 @@ void test_canWin(void)
 	char *oWinString = "33333641111325545455152264404016060660202";
 
 	Board *b = initBoard(EMPTYSTR);
-	for (unsigned long i = 0; i < strlen(oWinString) - DEPTH; ++i) {
+	for (unsigned long i = 0; i < strlen(oWinString) - MIN_DEPTH; ++i) {
 		Status status = add(b, oWinString[i] - '0');
 		CU_ASSERT_EQUAL(status, OK);
 	}
@@ -72,7 +72,7 @@ void test_canWin(void)
 	CU_ASSERT_EQUAL(getWinner(b), PIECE_1);
 
 	// must stay alive as long as possible.
-	CU_ASSERT_EQUAL(turncount, DEPTH);
+	CU_ASSERT_EQUAL(turncount, MIN_DEPTH);
 
 	deleteBoard(b);
 }
