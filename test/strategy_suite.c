@@ -39,14 +39,14 @@ void test_ValidMoves(void)
 void test_eval(void)
 {
 	Board *b = initBoard(EMPTYSTR);
-	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), 0);
+	CU_ASSERT_EQUAL(eval(b, 0), 0);
 	deleteBoard(b);
 
 	b = initBoard(VALID1STR);
-	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), 2);
+	CU_ASSERT_EQUAL(eval(b, 0), 2);
 
 	add(b, 0);
-	CU_ASSERT_EQUAL(eval(b, 0, b->currentPlayer), -2);
+	CU_ASSERT_EQUAL(eval(b, 0), -2);
 	deleteBoard(b);
 }
 
@@ -61,12 +61,16 @@ void test_canWin(void)
 		CU_ASSERT_EQUAL(status, OK);
 	}
 
+	int turncount = 0;
 	while (getWinner(b) == INCOMPLETE) {
 		int col = strategyAlphaBeta(b).move;
 		Status status = add(b, col);
 		CU_ASSERT_EQUAL(status, OK);
+		++turncount;
 	}
 
 	CU_ASSERT_EQUAL(getWinner(b), PIECE_1);
+	printf(" --- %c won in %d turns --- ", PIECE_1, turncount);
+
 	deleteBoard(b);
 }

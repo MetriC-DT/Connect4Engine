@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/param.h>
+#include <limits.h>
 #include <omp.h>
 
 #include "strategy.h"
@@ -84,7 +85,7 @@ Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int c
 	p.move = -1;
 
 	if (getWinner(b) != INCOMPLETE || depth == 0) {
-		p.value = color * eval(b, depth, currentPlayer);
+		p.value = color * eval(b, depth);
 		return p;
 	}
 
@@ -92,7 +93,7 @@ Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int c
 	getAvailableMoves(b, moves);
 	int movecount = moves[0];
 
-	p.value = -MAX_SCORE;
+	p.value = INT_MIN;
 	for (int i = 1; i <= movecount; ++i) {
 		add(b, moves[i]);
 
@@ -114,15 +115,13 @@ Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int c
 }
 
 
-int eval(Board *b, int depth, char currentPlayer)
+int eval(Board *b, int depth)
 {
 	if (getWinner(b) == PIECE_1) {
-		int offset = (currentPlayer == PIECE_1) ? depth : -depth;
-		return offset + MAX_SCORE;
+		return depth + MAX_SCORE;
 	}
 	else if (getWinner(b) == PIECE_2) {
-		int offset = (currentPlayer == PIECE_2) ? -depth : depth;
-		return -MAX_SCORE + offset;
+		return -(depth + MAX_SCORE);
 	}
 	else if (getWinner(b) == TIE) {
 		return 0;

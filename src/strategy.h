@@ -22,7 +22,7 @@ int strategyRandom(Board *b);
 Pair strategyAlphaBeta(Board *b);
 
 // static eval of board.
-int eval(Board *b, int depth, char currentPlayer);
+int eval(Board *b, int depth);
 
 Pair negamax(Board *b, char currentPlayer, int depth, int alpha, int beta, int color);
 
