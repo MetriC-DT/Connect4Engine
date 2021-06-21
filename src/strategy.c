@@ -24,6 +24,7 @@ void getAvailableMoves(Board *b, int *moves)
 		return;
 	}
 
+	// move ordering
 	int validmoves = 0;
 	int col = BOARD_WIDTH / 2;
 	int off = 0;
