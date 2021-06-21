@@ -47,11 +47,11 @@ Status add(Board *board, int column){
 	else if (column < 0 || column >= BOARD_WIDTH) {
 		return INVALID_INDEX;
 	}
-	else if (board->stackheight[column] == BOARD_HEIGHT) {
-		return COLUMN_FULL;
-	}
 	else if (board->winner != INCOMPLETE) {
 		return GAME_OVER;
+	}
+	else if (board->stackheight[column] == BOARD_HEIGHT) {
+		return COLUMN_FULL;
 	}
 	else {
 		int rowFromTop = BOARD_HEIGHT - (++board->stackheight[column]);

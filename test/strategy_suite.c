@@ -35,3 +35,17 @@ void test_ValidMoves(void)
 
 	free(b);
 }
+
+void test_eval(void)
+{
+	Board *b = initBoard(EMPTYSTR);
+	CU_ASSERT_EQUAL(eval(b, 0), 0);
+	free(b);
+
+	b = initBoard(VALID1STR);
+	CU_ASSERT_EQUAL(eval(b, 0), 2);
+
+	add(b, 0);
+	CU_ASSERT_EQUAL(eval(b, 0), -2);
+	free(b);
+}

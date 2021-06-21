@@ -1,4 +1,12 @@
+#ifndef STRATEGY_H
+#define STRATEGY_H
+
 #include "board.h"
+
+typedef struct Pair {
+	int value;
+	int move;
+} Pair;
 
 // copies the available moves to *moves.
 // ensure that moves can fit at most BOARD_WIDTH + 1 ints.
@@ -9,3 +17,19 @@ void getAvailableMoves(Board *b, int *moves);
 
 // random move picker strategy.
 int strategyRandom(Board *b);
+
+// alpha beta pruning. Returns the evaluation of the current position.
+int strategyAlphaBeta(Board *b);
+
+// static eval of board.
+int eval(Board *b, int depth);
+
+Pair negamax(Board *b, int depth, int alpha, int beta, int color);
+
+extern const int EVALTABLE[BOARD_SIZE];
+
+#define MAX_SCORE 10000
+
+#define DEPTH 10
+
+#endif

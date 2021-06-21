@@ -62,6 +62,7 @@ void cmd_run()
 			cmd_put(b, state, loc);
 		}
 
+		// GETMOVE
 		else if (strcmp(cmdstr, GETMOVE) == 0) {
 			int move = cmd_getmove(b, state);
 			if (move >= 0)
@@ -91,9 +92,12 @@ void cmd_run()
 		}
 		/********** END COMMANDS ***********/
 
-		// if game is over.
-		// if (getWinner(b) != INCOMPLETE) {
+		// Debugging when game is over.
+		// if (b != NULL && getWinner(b) != INCOMPLETE) {
 		// 	printf("GAME IS OVER. Winner: %c\n", getWinner(b));
+		// }
+		// else {
+		// 	displayBoard(b);
 		// }
 	}
 
@@ -161,6 +165,6 @@ int cmd_getmove(Board *b, Gamestate s)
 		return -1;
 	}
 	else {
-		return strategyRandom(b);
+		return strategyAlphaBeta(b);
 	}
 }
