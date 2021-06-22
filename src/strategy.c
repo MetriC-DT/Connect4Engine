@@ -126,18 +126,19 @@ int eval(Board *b, int depth)
 	}
 
 	int sum = 0;
+	int row, col, piece;
 
-	#pragma omp parallel for collapse(2) shared(sum)
-	for (int i = 0; i < BOARD_HEIGHT; ++i) {
-		for (int j = 0; j < BOARD_WIDTH; ++j) {
-			char piece = get(b, j, i);
-			// we replace rowFromBottom with i because of board vert symmetry
-			// int rowFromBottom = BOARD_HEIGHT - i - 1;
-			if (piece == PIECE_1)
-				sum += EVALTABLE[BOARD_WIDTH * i + j];
-			else if (piece == PIECE_2)
-				sum -= EVALTABLE[BOARD_WIDTH * i + j];
-		}
+	for (int n = 0; n < BOARD_SIZE; ++n) {
+		row = n / BOARD_WIDTH;
+		col = n % BOARD_WIDTH;
+		piece = get(b, col, row);
+
+		// we replace rowFromBottom with i because of board vert symmetry
+		// int rowFromBottom = BOARD_HEIGHT - i - 1;
+		if (piece == PIECE_1)
+			sum += EVALTABLE[BOARD_WIDTH * row + col];
+		else if (piece == PIECE_2)
+			sum -= EVALTABLE[BOARD_WIDTH * row + col];
 	}
 
 	return sum;
