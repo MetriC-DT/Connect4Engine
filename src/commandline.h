@@ -13,7 +13,7 @@
 typedef enum Gamestate {
 	NOT_INITIALIZED,
 	INITIALIZED,
-	IN_PROGRESS
+	GAME_COMPLETE
 } Gamestate;
 
 void cmd_run(void);

@@ -10,7 +10,7 @@
 Board *cmd_new(Gamestate *s);
 void cmd_help();
 void cmd_disp(Board *b, Gamestate s);
-void cmd_revert(Board *b, Gamestate s);
+void cmd_revert(Board *b, Gamestate *s);
 void cmd_put(Board *b, Gamestate s, int loc);
 void cmd_eval(Board *b, Gamestate s);
 void cmd_getmove(Board *b, Gamestate s);
@@ -46,7 +46,7 @@ void cmd_run()
 
 		// REVERT
 		else if (strcmp(cmdstr, REVERT) == 0) {
-			cmd_revert(b, state);
+			cmd_revert(b, &state);
 		}
 
 		// PUT
@@ -68,6 +68,7 @@ void cmd_run()
 			cmd_getmove(b, state);
 		}
 
+		// EVAL
 		else if (strcmp(cmdstr, EVAL) == 0) {
 			cmd_eval(b, state);
 		}
@@ -93,13 +94,11 @@ void cmd_run()
 		}
 		/********** END COMMANDS ***********/
 
-		// Debugging when game is over.
-		// if (b != NULL && getWinner(b) != INCOMPLETE) {
-		// 	printf("GAME IS OVER. Winner: %c\n", getWinner(b));
-		// }
-		// else {
-		// 	displayBoard(b);
-		// }
+
+		// if game has ended, state is NOT_INITIALIZED
+		if (b != NULL && getWinner(b) != INCOMPLETE) {
+			state = GAME_COMPLETE;
+		}
 	}
 
 	// frees all memory
@@ -136,20 +135,24 @@ void cmd_help()
 
 void cmd_disp(Board *b, Gamestate s)
 {
-	if (b == NULL || s != INITIALIZED)
+	if (b == NULL || s == NOT_INITIALIZED)
 		printf("Board invalid or not initialized\n");
 	else
 		displayBoard(b);
 }
 
-void cmd_revert(Board *b, Gamestate s)
+void cmd_revert(Board *b, Gamestate *s)
 {
-	if (b == NULL || s != INITIALIZED || revert(b) != OK)
+	// if successful revert, the game goes to being initialized.
+	if (b == NULL || s == NOT_INITIALIZED || revert(b) != OK)
 		printf("Unable to revert\n");
+	else
+		*s = INITIALIZED;
 }
 
 void cmd_put(Board *b, Gamestate s, int loc)
 {
+	// Can only put if IS initialized.
 	if (b == NULL || s != INITIALIZED) {
 		printf("Board invalid or not initialized\n");
 		return;
@@ -162,7 +165,8 @@ void cmd_put(Board *b, Gamestate s, int loc)
 
 void cmd_getmove(Board *b, Gamestate s)
 {
-	if (b == NULL || s != INITIALIZED) {
+	// disallow getting move when not initialized or game complete.
+	if (b == NULL || s == NOT_INITIALIZED || s == GAME_COMPLETE) {
 		printf("Board invalid or not initialized\n");
 		return;
 	}
@@ -173,7 +177,8 @@ void cmd_getmove(Board *b, Gamestate s)
 
 void cmd_eval(Board *b, Gamestate s)
 {
-	if (b == NULL || s != INITIALIZED) {
+	// evaluation disallowed only not initialized.
+	if (b == NULL || s == NOT_INITIALIZED) {
 		printf("Board invalid or not initialized\n");
 		return;
 	}

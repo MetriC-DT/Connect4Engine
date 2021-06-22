@@ -59,6 +59,9 @@ int strategyRandom(Board *b)
 }
 
 
+// uses alpha beta pruning to return the next valid move.
+// if no moves are available, returns -1 as the Pair.move.
+// Still returns evaluation as Pair.value.
 Pair strategyAlphaBeta(Board *b)
 {
 	int color = (b->currentPlayer == PIECE_1) ? 1 : -1;
@@ -70,11 +73,6 @@ Pair strategyAlphaBeta(Board *b)
 		p = negamax(b, b->currentPlayer, MIN_DEPTH, alpha, beta, color);
 	else
 		p = negamax(b, b->currentPlayer, MIN_DEPTH, -beta, -alpha, color);
-
-	if (p.move < 0) {
-		printf("Defaulting to random strategy.\n");
-		p.move = strategyRandom(b);
-	}
 
 	return p;
 }
