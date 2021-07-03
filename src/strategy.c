@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/param.h>
 #include <limits.h>
+#include <immintrin.h>
 
 #include "strategy.h"
 #include "board.h"

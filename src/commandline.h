@@ -9,6 +9,7 @@
 #define PUT "put "
 #define GETMOVE "getmove"
 #define EVAL "eval"
+#define AVAILABLEMOVES "availablemoves"
 
 typedef enum Gamestate {
 	NOT_INITIALIZED,
