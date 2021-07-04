@@ -35,16 +35,21 @@ void cmd_run()
 		ssize_t len = getline(&cmdstr, &sizeAlloc, stdin);
 
 		/********** COMMANDS ***********/
-		// QUIT
-		if (len < 0 || strcmp(cmdstr, QUIT) == 0) {
+		// QUIT if EOF
+		if (len < 0) {
 			break;
 		}
 
 		// replaces newline with null character.
 		cmdstr[--len] = '\0';
 
+		// QUIT
+		if (strcmp(cmdstr, QUIT) == 0) {
+			break;
+		}
+
 		// NEW
-		if (strcmp(cmdstr, NEW) == 0) {
+		else if (strcmp(cmdstr, NEW) == 0) {
 			deleteBoard(b);
 			b = cmd_new(&state);
 			state = INITIALIZED;

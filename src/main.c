@@ -1,6 +1,7 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "commandline.h"
 #include "version.h"
@@ -51,6 +52,8 @@ int main(int argc, char *argv[]) {
 	for (; optind < argc; ++optind) {
 		printf("%s\n", argv[optind]);
 	}
+
+	printf("Connect4Engine Version %s\n", VERSION);
 
 	cmd_run();
 
